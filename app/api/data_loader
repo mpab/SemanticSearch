@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pipenv run python model/data_loader.py

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+mkdir -p data/analysis
+mkdir -p data/api
+mkdir -p data/contexts
+mkdir -p data/features
+mkdir -p data/models
+mkdir -p data/reference
+mkdir -p data/responses
+
+cd ui
+yarn
+
+cd ../api
+pipenv run pipenv install
