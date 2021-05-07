@@ -2,7 +2,7 @@ import React from "react";
 import { GetContexts } from "../../Api";
 import { StringUtil } from "../Utilities";
 import { RenderManageSearchesView } from "./ManageSearchesView/Render";
-import { SearchContext } from "./SearchResultsView/Models";
+import { ApiResponse, SearchContext } from "./Models";
 import { RenderSearchResultsView } from "./SearchResultsView/Render";
 
 export const SortContextsBySearchTerms = (
@@ -59,16 +59,6 @@ export const getSearches = (
   }
   return sortSearches(arr);
 };
-
-export type UpdateContextsFn = (contexts: SearchContext[]) => void;
-
-export declare interface ApiResponse {
-  responseStatus: number;
-  responseStatusText: string;
-  response: SearchContext[];
-  filters: string[];
-  update: UpdateContextsFn;
-}
 
 const GetData = (initSearch: string = ""): ApiResponse => {
   const [contexts, setContexts] = React.useState<SearchContext[]>([]);
@@ -131,7 +121,7 @@ const GetData = (initSearch: string = ""): ApiResponse => {
   return {
     responseStatus: status,
     responseStatusText: statusText,
-    response: contexts,
+    searchContexts: contexts,
     filters: filters,
     update: updateContexts,
   };

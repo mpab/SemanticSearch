@@ -1,11 +1,7 @@
 import React from "react";
 import { useToasts } from "react-toast-notifications";
-import {
-  ApiResponse,
-  GetSourceImageTextFragment,
-  SortContextsBySearchTerms,
-  UpdateContextsFn,
-} from "..";
+import { SortContextsBySearchTerms, GetSourceImageTextFragment } from "..";
+
 import {
   CreateContext,
   CreateSummaryDocument,
@@ -31,7 +27,7 @@ import {
   WarningBread,
 } from "../../Toast";
 import { StringUtil } from "../../Utilities";
-import { SearchContext } from "../SearchResultsView/Models";
+import { ApiResponse, SearchContext } from "../Models";
 
 // TODO
 // word link
@@ -255,7 +251,7 @@ const RenderBody = (apiResponse: ApiResponse): React.ReactElement => {
 
   return (
     <tbody className="bg-white divide-y divide-gray-200">
-      {apiResponse.response.map((context, index) => (
+      {apiResponse.searchContexts.map((context, index) => (
         <>
           <tr>
             <td className="px-6 py-4 whitespace-nowrap">

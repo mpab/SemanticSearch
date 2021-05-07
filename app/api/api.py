@@ -20,7 +20,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def home():
     return render_template('home.html')
 
-@app.route('/api/context', methods=['GET'])
+@app.route('/api/contexts', methods=['GET'])
 def api_context_query_all():
     print ("/api/context GET")
     json = context_query()

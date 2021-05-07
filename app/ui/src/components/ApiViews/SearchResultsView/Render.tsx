@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiResponse, GetSourceImageTextFragment } from "..";
+import { GetSourceImageTextFragment } from "..";
 import { pdfUrl } from "../../../Api";
 import {
   ChildPolicy,
@@ -11,30 +11,37 @@ import {
 import { Control } from "../../CommonControls/ParentControls";
 import { _classNames } from "../../CommonControls/_classNames";
 import { StringUtil } from "../../Utilities";
-import { SearchContext, Searchresult, Searchresultpage } from "./Models";
+import {
+  ApiResponse,
+  SearchContext,
+  Searchresult,
+  Searchresultpage,
+} from "../Models";
 
-const buildFilteredContexts = (
-  contexts: SearchContext[],
+const buildFilteredApiResponse = (
+  apiResponse: ApiResponse,
   filter: string
-): SearchContext[] => {
-  const result: SearchContext[] = [];
+): ApiResponse => {
+  const filteredSearchContexts: SearchContext[] = [];
 
   if (filter === "*" || filter === "") {
-    return contexts; // NOP
+    return apiResponse; // NOP
   }
 
-  for (var i = 0; i !== contexts.length; ++i) {
-    const context: SearchContext = contexts[i];
+  for (var i = 0; i !== apiResponse.searchContexts.length; ++i) {
+    const context: SearchContext = apiResponse.searchContexts[i];
 
     const termsCss = StringUtil.arrayToString(context.search_request.terms);
 
     if (filter === termsCss) {
-      result.push(context);
+      filteredSearchContexts.push(context);
       continue;
     }
   }
 
-  return result;
+  apiResponse.searchContexts = filteredSearchContexts;
+
+  return apiResponse;
 };
 
 const makeCountsFeatureUrl = (
@@ -325,7 +332,7 @@ const RenderBody = (apiResponse: ApiResponse): React.ReactElement => {
 
   return (
     <tbody className="bg-white divide-y divide-gray-200">
-      {apiResponse.response.map((context, contextKey) => {
+      {apiResponse.searchContexts.map((context, contextKey) => {
         return context.search_result_pages.map(
           (searchResultPage, searchResultPageIndex) => {
             return searchResultPage.search_results.map(
@@ -350,9 +357,10 @@ const RenderBody = (apiResponse: ApiResponse): React.ReactElement => {
 export const RenderSearchResultsView = (
   apiResponse: ApiResponse
 ): React.ReactElement => {
-  const [filteredContexts, setFilteredContexts] = React.useState<
-    SearchContext[]
-  >(apiResponse.response);
+  const [
+    filteredApiResponse,
+    setFilteredApiResponse,
+  ] = React.useState<ApiResponse>(apiResponse);
 
   const [filter, setFilter] = React.useState<string>("*");
 
@@ -364,8 +372,8 @@ export const RenderSearchResultsView = (
         "text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
       onSelect: (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFilter(e.target.value);
-        setFilteredContexts(
-          buildFilteredContexts(apiResponse.response, e.target.value)
+        setFilteredApiResponse(
+          buildFilteredApiResponse(apiResponse, e.target.value)
         );
         //console.log("SelectControl.onSelect: " + e.target.value);
       },
@@ -445,7 +453,7 @@ export const RenderSearchResultsView = (
                     </th>
                   </tr>
                 </thead>
-                {RenderBody(apiResponse)}
+                {RenderBody(filteredApiResponse)}
               </table>
             </div>
           </div>

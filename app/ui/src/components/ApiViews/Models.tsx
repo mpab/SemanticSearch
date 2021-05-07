@@ -1,3 +1,4 @@
+// generated models
 export declare interface SearchContext {
   search_request: Searchrequest;
   search_result_pages: Searchresultpage[];
@@ -49,4 +50,16 @@ interface Searchrequest {
   terms_hash: string;
   identifier: string;
   identifier_hash: string;
+}
+
+// non-generated models
+
+export type UpdateContextsFn = (contexts: SearchContext[]) => void;
+
+export declare interface ApiResponse {
+  responseStatus: number;
+  responseStatusText: string;
+  searchContexts: SearchContext[];
+  filters: string[];
+  update: UpdateContextsFn;
 }

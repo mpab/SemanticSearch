@@ -13,52 +13,7 @@ export const ExecuteContext = async (identifier_hash: string) => {
 };
 
 export const GetContexts = async () => {
-  return await axios.get(apiUrl + "context");
-};
-
-export const GetCountsFeatureDocument = async (
-  identifier_hash: string,
-  result_hash: string
-) => {
-  return await axios.get(
-    apiUrl + "feature/counts/" + identifier_hash + "/" + result_hash
-  );
-};
-
-export const GetExtractFeatureDocument = async (
-  identifier_hash: string,
-  result_hash: string
-) => {
-  return await axios.get(
-    apiUrl + "feature/extract/" + identifier_hash + "/" + result_hash
-  );
-};
-
-export const GetTagsFeatureDocument = async (
-  identifier_hash: string,
-  result_hash: string
-) => {
-  return await axios.get(
-    apiUrl + "feature/tags/" + identifier_hash + "/" + result_hash
-  );
-};
-
-export const GetTokensFeatureDocument = async (
-  identifier_hash: string,
-  result_hash: string
-) => {
-  return await axios.get(
-    apiUrl + "feature/tokens/" + identifier_hash + "/" + result_hash
-  );
-};
-
-export const GetTokensGraphFeatureDocument = async (
-  identifier_hash: string,
-  result_hash: string
-) => {
-  return await axios.get(
-    apiUrl + "feature/tokens_graph/" + identifier_hash + "/" + result_hash
-  );
+  return await axios.get(apiUrl + "contexts");
 };
 
 export const DeleteContext = async (identifier_hash: string) => {

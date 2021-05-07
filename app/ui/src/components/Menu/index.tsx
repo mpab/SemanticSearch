@@ -1,8 +1,6 @@
-import { Transition } from "@windmill/react-ui";
 import React from "react";
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { HorizontalLineDivider } from "../CommonControls/HorizontalLineDivider";
 import { _classNames } from "../CommonControls/_classNames";
 
 const Navigation = (): ReactElement => {
