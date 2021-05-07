@@ -30,7 +30,7 @@ class HttpRequestParameters(object):
         system = platform.system()
         # http://getright.com/useragent.html
         if system == 'Windows':
-            self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0'}
+            self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0'}
         elif system == 'Darwin':
             self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15'}
         else:
@@ -64,7 +64,8 @@ class SearchRequest(object):
 class SearchRequestExt(object):
     @staticmethod
     def make_from_search_terms(search_terms: List[str]) -> List[SearchRequest]:
-        return [SearchRequest(DataSource.arxiv, search_terms), SearchRequest(DataSource.scholar, search_terms)]
+        #return [SearchRequest(DataSource.arxiv, search_terms), SearchRequest(DataSource.scholar, search_terms)]
+        return [SearchRequest(DataSource.arxiv, search_terms)]
     
 class Features(object):
     def __init__(self, identifier_hash: str, result_hash: str):

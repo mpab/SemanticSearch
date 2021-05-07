@@ -72,6 +72,30 @@ const RenderDocLink = (apiResponse: ApiResponse, context: SearchContext) => {
   };
 
   if (context.exec_state_value === 0) {
+    let search_results = 0;
+    for (let i = 0; i !== context.search_result_pages.length; ++i) {
+      let page = context.search_result_pages[i];
+      for (let j = 0; j !== page.search_results.length; ++j) {
+        ++search_results;
+      }
+    }
+
+    // TODO: create link to search result html
+    if (search_results === 0) {
+      return <>no search results</>;
+    }
+
+    if (context.word_document_state_value === 0) {
+      return Control(
+        UrlProps({
+          image: "",
+          title: "open",
+          link: docUrl + context.word_document_info,
+          subtitles: [""],
+        })
+      );
+    }
+
     if (context.word_document_state_value === 0) {
       return Control(
         UrlProps({
@@ -84,6 +108,16 @@ const RenderDocLink = (apiResponse: ApiResponse, context: SearchContext) => {
     }
 
     if (context.word_document_state_value === 1) {
+      return Control(
+        ButtonProps({
+          image: "",
+          title: "generate",
+          onClick: onClick,
+        })
+      );
+    }
+
+    if (search_results && context.word_document_state_value === 1) {
       return Control(
         ButtonProps({
           image: "",
