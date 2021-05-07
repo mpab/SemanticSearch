@@ -7,6 +7,7 @@ mkdir -p data/features
 mkdir -p data/models
 mkdir -p data/reference
 mkdir -p data/responses
+mkdir -p data/generated_word_documents
 
 cd ui
 yarn
