@@ -16,14 +16,14 @@ class DataSource(Enum):
 
     @staticmethod
     def from_str(label):
-        if label in ('scholar'):
+        if label == 'scholar':
             return DataSource.scholar
-        elif label in ('arxiv'):
+        if label ==  'arxiv':
             return DataSource.arxiv
-        elif label in ('researchgate'):
+        if label ==  'researchgate':
             return DataSource.researchgate
 
-        raise NotImplementedError
+        raise TypeError
 
 class HttpRequestParameters(object):
     def __init__(self, page: int, url: str):
@@ -63,15 +63,15 @@ class SearchRequest(object):
         
 class SearchRequestExt(object):
     @staticmethod
-    def make_from_search_terms(search_terms: List[str]) -> List[SearchRequest]:
-        #return [SearchRequest(DataSource.arxiv, search_terms), SearchRequest(DataSource.scholar, search_terms)]
-        return [SearchRequest(DataSource.arxiv, search_terms)]
+    def make_multiple_from_search_terms(search_terms: List[str]) -> List[SearchRequest]:
+        return [SearchRequest(DataSource.arxiv, search_terms), SearchRequest(DataSource.scholar, search_terms)]
     
+   
 class Features(object):
     def __init__(self, identifier_hash: str, result_hash: str):
         self.identifier_hash = identifier_hash
         self.result_hash = result_hash
-        self.isValid = False
+        self.is_valid = False
         self.info = ''
         
         self.feature_counts_filename = ''
@@ -81,11 +81,11 @@ class Features(object):
         self.feature_tokens_graph_filename= ''
        
     def setValid(self, info: str):
-        self.isValid = True
+        self.is_valid = True
         self.info = info
         
     def setInvalid(self, info: str):
-        self.isValid = False
+        self.is_valid = False
         self.info = info
         
     def __str__(self):
@@ -142,18 +142,18 @@ class ExecState(Enum):
 
     @staticmethod
     def from_str(label):
-        if label in ('exec_1_start'):
+        if label == 'exec_1_start':
             return ExecState.exec_1_start
-        elif label in ('exec_2_run_search'):
+        if label == 'exec_2_run_search':
             return ExecState.exec_2_run_search
-        elif label in ('exec_3_download_references'):
+        if label == 'exec_3_download_references':
             return ExecState.exec_3_download_references
-        elif label in ('exec_0_stop'):
+        if label == 'exec_0_stop':
             return ExecState.exec_0_stop
-        elif label in ('exec_n_error'):
+        if label == 'exec_n_error':
             return ExecState.exec_n_error
 
-        raise NotImplementedError
+        raise TypeError
     
 class WordDocumentState(Enum):
     valid = 0
@@ -162,11 +162,11 @@ class WordDocumentState(Enum):
 
     @staticmethod
     def from_str(label):
-        if label in ('none'):
+        if label == 'none':
             return WordDocumentState.none
-        elif label in ('valid'):
+        if label == 'valid':
             return WordDocumentState.valid
-        elif label in ('invalid'):
+        if label == 'invalid':
             return WordDocumentState.invalid
         
         raise NotImplementedError
@@ -203,13 +203,13 @@ class SearchContext(object):
 
     def serialize_json(self):
         filepath = Folders.contexts() + self.search_request.identifier_hash + '.json'
-        with open(filepath, 'w', encoding='utf-8') as fh:
-            fh.write(json.dumps(self, indent=2, cls=JsonEncoder, ensure_ascii=False))
+        with open(filepath, 'w', encoding='utf-8') as file_handle:
+            file_handle.write(json.dumps(self, indent=2, cls=JsonEncoder, ensure_ascii=False))
 
     def serialize_pickle(self):
         filepath = Folders.contexts() + self.search_request.identifier_hash + '.pickle'
-        with open(filepath, 'wb') as fh:
-            pickle.dump(self, fh)
+        with open(filepath, 'wb') as file_handle:
+            pickle.dump(self, file_handle)
 
     def __str__(self):
         return json.dumps(self, indent=2, cls=JsonEncoder)
@@ -222,13 +222,13 @@ class SearchContext(object):
     def get_context_filepath(identifier_hash: str, ext: str):
         return Folders.contexts() + identifier_hash + '.' + ext
         
-class SearchContextExt(object):
+class SearchContextExt():
     @staticmethod
     def deserialize_from_filename(filename: str) -> SearchContext:
         filepath = Folders.contexts() + filename
         if os.path.exists(filepath):
-            with open(filepath, 'rb') as fh:
-                search_context = pickle.load(fh)
+            with open(filepath, 'rb') as file_handle:
+                search_context = pickle.load(file_handle)
                 return search_context
 
         return None

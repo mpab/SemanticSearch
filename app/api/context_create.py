@@ -1,7 +1,7 @@
 import sys
 from typing import List, Tuple
 
-from context_types import SearchContextExt, SearchRequest, SearchContext, SearchRequestExt
+from context_types import DataSource, SearchContextExt, SearchRequest, SearchContext
 from utilities import StringUtil, CmdLineUtil
 
 def context_create(search_request: SearchRequest) -> Tuple[bool, str]:
@@ -25,33 +25,33 @@ def context_create(search_request: SearchRequest) -> Tuple[bool, str]:
 
     return (True, summary)
 
-def contexts_create(search_terms: List[str]) -> Tuple[bool, str]:
-    requests = SearchRequestExt.make_from_search_terms(search_terms)
+def context_create_from_search_terms(data_source: DataSource, search_terms: List[str]) -> Tuple[bool, str]:
+    request = SearchRequest(data_source, search_terms)
+    return context_create(request)
 
-    statuses = True
-    infos = []
-
-    for request in requests:
-        status, info = context_create(request)
-        print (status, info)
-        infos.append(info)
-        if status == False:
-            statuses = False
-
-    return (statuses, StringUtil.list_to_string(infos))
-
-def print_usage_and_exit():
-    print ('Usage: %s <<list of search terms>>' % sys.argv[0])
+def print_usage_and_exit(msg: str = None):
+    print ('Usage: %s <<data_source>> <<list of search terms>>' % sys.argv[0])
+    print ("where <<data_source>> is one of:", DataSource._member_names_)
     print ('Actual:', StringUtil.list_to_string(sys.argv, ' '))
+    if msg:
+        print (msg)
     sys.exit(-1)
 
 def main():
-    search_terms = CmdLineUtil.read_params()
-    print (StringUtil.list_to_string(search_terms))
-    if len(search_terms) == 0:
+    params = CmdLineUtil.read_params()
+    print (StringUtil.list_to_string(params))
+    if len(params) <= 1:
         print_usage_and_exit()
+    
+    try:
+        data_source = DataSource.from_str(params[0])
+    except TypeError:
+        print_usage_and_exit("invalid data_source: " + params[0])
+        
+    search_terms = params[1:]
+    print (search_terms)
 
-    status, info = contexts_create(search_terms)
+    status, info = context_create_from_search_terms(data_source, search_terms)
     print (status, info)
                 
 if __name__ == "__main__":

@@ -1,15 +1,16 @@
-from context_types import Features
-from features_extract import features_extract_by_identifier_hash_and_result_hash
-from utilities import Folders
-from word_document_create import word_document_create_by_identifier_hash
+from context_execute import context_execute_by_identifier_hash
+from context_delete import context_delete_by_identifier_hash
+from context_query import context_query
 import flask
-from flask import render_template, Response, send_from_directory, abort
+from flask import Response, abort, render_template, send_from_directory
 from flask_cors import CORS
 
-from context_query import *
-from context_create import *
-from context_execute import *
-from context_delete import *
+from context_types import Features
+from context_multi_create import context_multi_create_from_search_terms
+from features_extract import \
+    features_extract_by_identifier_hash_and_result_hash
+from utilities import Folders
+from word_document_create import word_document_create_by_identifier_hash
 
 app = flask.Flask(__name__, template_folder='./html')
 app.config["DEBUG"] = True
@@ -51,7 +52,7 @@ def api_contexts_create(terms: str):
     
     if str:
         terms = terms.split(' ')
-        succeeded, msg = contexts_create(terms)
+        succeeded, msg = context_multi_create_from_search_terms(terms)
         if succeeded:
             return Response(msg, status=200, mimetype='application/text')
 
@@ -106,18 +107,7 @@ def get_doc(file_name):
 ######################################################################################################
 # features and feature analysis
 ######################################################################################################
-
-@app.route("/api/features_extract/<identifier_hash>/<result_hash>", methods=['PUT'])
-def features_extract(identifier_hash, result_hash):
-    print ("/api/features_extract/ PUT: " + identifier_hash + "/" + result_hash)
-    try:
-        status, info, result = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
-        if status:
-            return Response(info, status=200, mimetype='application/text')
-        return Response(info, status=201, mimetype='application/text')       
-    except:
-        abort(404)
-        
+       
 @app.route("/feature/counts/<identifier_hash>/<result_hash>", methods=['GET'])
 def get_feature_counts(identifier_hash, result_hash):
     
@@ -126,7 +116,7 @@ def get_feature_counts(identifier_hash, result_hash):
     try:
         features: Features = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
         print (features)
-        if features.isValid:
+        if features.is_valid:
             return send_from_directory(Folders.features(), filename=features.feature_counts_filename, as_attachment=True)
         return Response(features.info, status=201, mimetype='application/text')       
     except FileNotFoundError:
@@ -137,7 +127,7 @@ def get_feature_counts(identifier_hash, result_hash):
 def get_feature_extract(identifier_hash, result_hash):
     try:
         features: Features = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
-        if features.isValid:
+        if features.is_valid:
             return send_from_directory(Folders.features(), filename=features.feature_extract_filename, as_attachment=True)
         return Response(features.info, status=201, mimetype='application/text')       
     except FileNotFoundError:
@@ -147,7 +137,7 @@ def get_feature_extract(identifier_hash, result_hash):
 def get_feature_tags(identifier_hash, result_hash):
     try:
         features: Features = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
-        if features.isValid:
+        if features.is_valid:
             return send_from_directory(Folders.features(), filename=features.feature_tags_filename, as_attachment=True)
         return Response(features.info, status=201, mimetype='application/text')         
     except FileNotFoundError:
@@ -157,7 +147,7 @@ def get_feature_tags(identifier_hash, result_hash):
 def get_feature_tokens(identifier_hash, result_hash):
     try:
         features: Features = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
-        if features.isValid:
+        if features.is_valid:
             return send_from_directory(Folders.features(), filename=features.feature_tokens_filename, as_attachment=True)
         return Response(features.info, status=201, mimetype='application/text')      
     except FileNotFoundError:
@@ -167,7 +157,7 @@ def get_feature_tokens(identifier_hash, result_hash):
 def get_feature_tokens_graph(identifier_hash, result_hash):
     try:
         features: Features = features_extract_by_identifier_hash_and_result_hash(identifier_hash, result_hash)
-        if features.isValid:
+        if features.is_valid:
             return send_from_directory(Folders.features(), filename=features.feature_tokens_graph_filename, as_attachment=True)
         return Response(features.info, status=201, mimetype='application/text')         
     except FileNotFoundError:

@@ -115,6 +115,12 @@ const Actions = (context: SearchContext, searchresult: Searchresult) => {
         policy: ChildPolicy.CloseIfAnyClicked,
         className: _classNames.purplePlainFrame,
         children: [
+          LabelProps({
+            title: "Title",
+            getValue: () => {
+              return searchresult.title;
+            },
+          }),
           UrlProps({
             image: "",
             title: "view research paper",

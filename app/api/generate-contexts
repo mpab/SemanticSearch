@@ -3,9 +3,9 @@
 generate() {
     echo $@
     
-    ./context_delete        $@
-    ./context_create        $@
-    ./context_execute       $@
+    ./context_multi_delete        $@
+    ./context_multi_create        $@
+    ./context_multi_execute       $@
     
     #./word_document_create  $@
     #./context_query         $@
@@ -14,16 +14,16 @@ generate() {
 }
 
 generate neural networks
-generate graph database
-generate neural networks word frequency
-generate ontology modelling modeling owl rdf
-generate ontology modelling modeling wordnet
-generate ontology reasoning
-generate semantic distance
-generate semantic distance ontology neural networks
-generate semantic distance ontology wordnet neural networks
-generate semantic distance ontology wordnet semantic meaning
-generate semantic distance ontology wordnet semantic metrics
-generate semantic ontology matching cider
-generate semantic ontology matching cromatcher
-generate semantic ontology matching multifarm
+# generate graph database
+# generate neural networks word frequency
+# generate ontology modelling modeling owl rdf
+# generate ontology modelling modeling wordnet
+# generate ontology reasoning
+# generate semantic distance
+# generate semantic distance ontology neural networks
+# generate semantic distance ontology wordnet neural networks
+# generate semantic distance ontology wordnet semantic meaning
+# generate semantic distance ontology wordnet semantic metrics
+# generate semantic ontology matching cider
+# generate semantic ontology matching cromatcher
+# generate semantic ontology matching multifarm

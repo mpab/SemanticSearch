@@ -28,7 +28,7 @@ def word_document_create_by_identifier_hash(identifier_hash: str) -> Tuple[int, 
     return (context.word_document_state_value, context.word_document_info)
     
 def create_word_documents_by_search_terms(search_terms: List[str]):
-    requests = SearchRequestExt.make_from_search_terms(search_terms)
+    requests = SearchRequestExt.make_multiple_from_search_terms(search_terms)
     for request in requests:
         status, info = word_document_create_by_identifier_hash(request.identifier_hash)
         print (status, info)

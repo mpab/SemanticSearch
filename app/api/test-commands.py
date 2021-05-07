@@ -21,7 +21,7 @@ def test_functions(search_terms: List[str]):
     print (SearchRequest.make_identifier_hash(DataSource.arxiv, terms_string))
     print (SearchRequest.make_identifier_hash(DataSource.scholar, terms_string))
     
-    requests = SearchRequestExt.make_from_search_terms(search_terms)
+    requests = SearchRequestExt.make_multiple_from_search_terms(search_terms)
     for request in requests:
         print(str(request))
         

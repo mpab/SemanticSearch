@@ -196,7 +196,7 @@ def features_extract_by_identifier_hash_and_result_hash(identifier_hash: str, re
                     #print ("extracting:", result.pdf_filepath)
                     features.result_hash = result.hash
                     extract_from_pdf(features)
-                    if (features.isValid):
+                    if (features.is_valid):
                         extract_count = extract_count + 1
                     else:
                         error_count = error_count + 1
@@ -220,7 +220,7 @@ def features_extract_by_identifier_hash(identifier_hash: str) -> Tuple[int, str]
     return features_extract_by_identifier_hash_and_result_hash(identifier_hash, None)
    
 def features_extract(search_terms: List[str]):
-    requests = SearchRequestExt.make_from_search_terms(search_terms)
+    requests = SearchRequestExt.make_multiple_from_search_terms(search_terms)
 
     statuses = True
     infos = []

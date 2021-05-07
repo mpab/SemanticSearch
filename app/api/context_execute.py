@@ -1,11 +1,10 @@
-from document_utilities import DocUtil
-import sys
-from typing import List, Tuple
+from typing import Tuple
 
-from context_types import DataSource, ExecState, SearchContext, SearchContextExt, SearchRequest
+from context_types import (DataSource, ExecState, SearchContext,
+                           SearchContextExt)
+from document_utilities import DocUtil
 from search_arxiv import search_arxiv
 from search_scholar import search_scholar
-from utilities import CmdLineUtil, StringUtil
 
 
 def exec_3_download_references(context: SearchContext) -> Tuple[bool, str]:
@@ -105,28 +104,3 @@ def context_execute_by_identifier_hash(identifier_hash: str) -> Tuple[int, str]:
     print (status, info)
     return status, info
     
-def context_execute(search_terms: List[str]):
-    contexts = SearchContextExt.get_search_contexts()
-    
-    if contexts is None or len(contexts) == 0:
-        print ("no contexts")
-        return
-
-    for context in contexts:   
-        status, info = context_execute_by_identifier_hash(context.search_request.identifier_hash)
-        print (status, info)
-
-def print_usage_and_exit():
-    print ('Usage: %s <<list of search terms>>' % sys.argv[0])
-    print ('Actual:', StringUtil.list_to_string(sys.argv, ' '))
-    sys.exit(-1)
-
-def main():
-    search_terms = CmdLineUtil.read_params()
-    if len(search_terms) == 0:
-        print_usage_and_exit()
-
-    context_execute(search_terms)
-                
-if __name__ == "__main__":
-    main()
