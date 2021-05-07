@@ -1,17 +1,14 @@
-import argparse
-from document_utilities import DocUtil
-from utilities import Folders
-import io
 import os
-import sys
 from datetime import date
 from typing import List
 
 import requests
 from bs4 import BeautifulSoup
 
-from context_types import (HttpRequestParameters, SearchContext, SearchRequest, SearchResult,
-                           SearchResultPage)
+from context_types import (HttpRequestParameters, SearchContext, SearchRequest,
+                           SearchResult, SearchResultPage)
+from document_utilities import DocUtil
+from utilities import Folders
 
 
 def make_http_request_parameters(search_request: SearchRequest, page: int) -> HttpRequestParameters:
