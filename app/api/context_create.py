@@ -1,8 +1,10 @@
-import sys
-from typing import List, Tuple
+# pylint: disable=missing-docstring
 
-from context_types import DataSource, SearchContextExt, SearchRequest, SearchContext
-from utilities import StringUtil, CmdLineUtil
+from typing import Tuple
+
+from context_args_parse import Args, ContextArgs
+from context_types import SearchContext, SearchContextExt, SearchRequest
+
 
 def context_create(search_request: SearchRequest) -> Tuple[bool, str]:
 
@@ -14,45 +16,30 @@ def context_create(search_request: SearchRequest) -> Tuple[bool, str]:
 
     context = SearchContext(search_request)
     summary = context.friendly_name() + ": created"
-            
+
     try:
         context.serialize()
-        summary = summary + ', serialized'
+        summary = summary + ", serialized"
     except Exception as e:
-        print (e)
-        summary = summary + ', could not serialize'
+        print(e)
+        summary = summary + ", could not serialize"
         return (False, summary)
 
     return (True, summary)
 
-def context_create_from_search_terms(data_source: DataSource, search_terms: List[str]) -> Tuple[bool, str]:
-    request = SearchRequest(data_source, search_terms)
+
+def context_create_by_context_parameters(
+    context_parameters: ContextArgs,
+) -> Tuple[bool, str]:
+    request = SearchRequest(context_parameters.data_source, context_parameters.args)
     return context_create(request)
 
-def print_usage_and_exit(msg: str = None):
-    print ('Usage: %s <<data_source>> <<list of search terms>>' % sys.argv[0])
-    print ("where <<data_source>> is one of:", DataSource._member_names_)
-    print ('Actual:', StringUtil.list_to_string(sys.argv, ' '))
-    if msg:
-        print (msg)
-    sys.exit(-1)
 
 def main():
-    params = CmdLineUtil.read_params()
-    print (StringUtil.list_to_string(params))
-    if len(params) <= 1:
-        print_usage_and_exit()
-    
-    try:
-        data_source = DataSource.from_str(params[0])
-    except TypeError:
-        print_usage_and_exit("invalid data_source: " + params[0])
-        
-    search_terms = params[1:]
-    print (search_terms)
+    args: ContextArgs = Args.parse_cmdline()
+    success, info = context_create_by_context_parameters(args)
+    print(success, info)
 
-    status, info = context_create_from_search_terms(data_source, search_terms)
-    print (status, info)
-                
+
 if __name__ == "__main__":
     main()

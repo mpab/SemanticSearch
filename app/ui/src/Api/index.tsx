@@ -5,7 +5,7 @@ export const pdfUrl = new URL("http://localhost:5000/pdf/");
 export const docUrl = new URL("http://localhost:5000/doc/");
 
 export const CreateContext = async (terms: string) => {
-  return await axios.put(apiUrl + "context/" + terms);
+  return await axios.put(apiUrl + "context_multi/" + terms);
 };
 
 export const ExecuteContext = async (identifier_hash: string) => {

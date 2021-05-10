@@ -1,11 +1,11 @@
 #!/bin/bash
 
-generate() {
+generate_arxiv() {
     echo $@
     
-    ./context_multi_delete        $@
-    ./context_multi_create        $@
-    ./context_multi_execute       $@
+    ./context_delete        arxiv $@
+    ./context_create        arxiv $@
+    ./context_execute       arxiv $@
     
     #./word_document_create  $@
     #./context_query         $@
@@ -13,7 +13,7 @@ generate() {
     #./features_extract       $@
 }
 
-generate neural networks
+generate_arxiv neural networks
 # generate graph database
 # generate neural networks word frequency
 # generate ontology modelling modeling owl rdf

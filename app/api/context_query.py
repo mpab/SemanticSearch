@@ -3,7 +3,7 @@ import json
 from typing import Dict, List
 
 from context_types import  SearchContext, SearchContextExt
-from utilities import JsonEncoder, dump_api_response
+from utilities import JsonEncoder, save_api_response
 
 
 def context_query_as_dict(key: str = '*'):
@@ -16,7 +16,7 @@ def context_query_as_dict(key: str = '*'):
             result[context.search_request.identifier_hash] = context
     
     response = json.dumps(result, indent=2, cls=JsonEncoder, ensure_ascii=False)
-    dump_api_response(response, 'context_query_dict_response.json')
+    save_str_as_as_save_api_responseutf8_file(response, 'context_query_dict_response.json')
     return response
 
 def context_query(key: str = '*'):
@@ -29,7 +29,7 @@ def context_query(key: str = '*'):
             result.append(context)
 
     response = json.dumps(result, indent=2, cls=JsonEncoder, ensure_ascii=False)
-    dump_api_response(response, 'context_query_list_response.json')
+    save_api_response(response, 'context_query_list_response.json')
     return response
 
 if __name__ == '__main__':

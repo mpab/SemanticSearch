@@ -13,4 +13,4 @@ cd ui
 yarn
 
 cd ../api
-pipenv run pipenv install
+pipenv run pipenv install -d
