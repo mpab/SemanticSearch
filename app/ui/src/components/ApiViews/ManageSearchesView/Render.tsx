@@ -72,16 +72,8 @@ const RenderDocLink = (apiResponse: ApiResponse, context: SearchContext) => {
   };
 
   if (context.exec_state_value === 0) {
-    let search_results = 0;
-    for (let i = 0; i !== context.search_result_pages.length; ++i) {
-      let page = context.search_result_pages[i];
-      for (let j = 0; j !== page.search_results.length; ++j) {
-        ++search_results;
-      }
-    }
-
     // TODO: create link to search result html
-    if (search_results === 0) {
+    if (context.count_of_search_results === 0) {
       return <>no search results</>;
     }
 
@@ -117,7 +109,10 @@ const RenderDocLink = (apiResponse: ApiResponse, context: SearchContext) => {
       );
     }
 
-    if (search_results && context.word_document_state_value === 1) {
+    if (
+      context.count_of_search_results > 0 &&
+      context.word_document_state_value === 1
+    ) {
       return Control(
         ButtonProps({
           image: "",
@@ -292,6 +287,9 @@ const RenderBody = (apiResponse: ApiResponse): React.ReactElement => {
               {StringUtil.arrayToString(context.search_request.terms)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
+              {"results count: " + context.count_of_search_results}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
               {GetSourceImageTextFragment(context)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
@@ -392,6 +390,12 @@ export const RenderManageSearchesView = (
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Search Identifier
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Search Results Info
                     </th>
                     <th
                       scope="col"

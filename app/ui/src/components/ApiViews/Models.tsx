@@ -2,6 +2,7 @@
 export declare interface SearchContext {
   search_request: Searchrequest;
   search_result_pages: Searchresultpage[];
+  count_of_search_results: number;
   exec_state_name: string;
   exec_state_value: number;
   exec_state_issues: string;

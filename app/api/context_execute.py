@@ -4,18 +4,15 @@ from typing import Tuple
 
 from context_args_parse import Args, ContextArgs
 from context_types import (
-    DataSource,
     ExecState,
     SearchContext,
     SearchContextExt,
     SearchRequest,
 )
 from document_utilities import DocUtil
-from search_arxiv import search_arxiv
-from search_scholar import search_scholar
 
 
-def exec_3_download_references(context: SearchContext) -> Tuple[bool, str]:
+def download_references(context: SearchContext) -> Tuple[bool, str]:
 
     issues_count = 0
     for page in context.search_result_pages:
@@ -42,31 +39,6 @@ def exec_3_download_references(context: SearchContext) -> Tuple[bool, str]:
             print("-- DOWNLOAD/VALIDATE PDF --")
 
     return (True, "issues: " + str(issues_count))
-
-
-def exec_2_run_search(context: SearchContext) -> Tuple[bool, str]:
-
-    try:
-        data_source = DataSource.from_str(context.search_request.source_name)
-
-        if data_source == DataSource.arxiv:
-            search_result_pages = search_arxiv(context.search_request)
-            context.search_result_pages = search_result_pages
-            return (True, "")
-
-        if data_source == DataSource.scholar:
-            search_result_pages = search_scholar(context.search_request, 5)
-            context.search_result_pages = search_result_pages
-            return (True, "")
-
-        issue = "unhandled search request source: " + data_source.name
-        print(issue)
-        return (False, issue)
-
-    except Exception as e:
-        print(e)
-        print("could not exec_2_run_search: " + context.friendly_name())
-        return (False, str(e))
 
 
 def context_execute_by_identifier_hash_step(identifier_hash: str) -> Tuple[int, str]:
@@ -96,31 +68,8 @@ def context_execute_by_identifier_hash_step(identifier_hash: str) -> Tuple[int, 
             + context.exec_state_name,
         )
 
-    if execute_state == ExecState.exec_2_run_search:
-        succeeded, issues = exec_2_run_search(context)
-        if succeeded:
-            context.set_state(ExecState.exec_3_download_references, issues)
-            context.serialize()
-            return (
-                1,
-                "executed context: "
-                + context.friendly_name()
-                + " => "
-                + context.exec_state_name,
-            )
-
-        context.set_state(ExecState.exec_n_error, issues)
-        context.serialize()
-        return (
-            -1,
-            "executed context: "
-            + context.friendly_name()
-            + " => "
-            + context.exec_state_name,
-        )
-
     if execute_state == ExecState.exec_3_download_references:
-        succeeded, issues = exec_3_download_references(context)
+        succeeded, issues = download_references(context)
         if succeeded:
             context.set_state(ExecState.exec_0_stop, issues)
             context.serialize()

@@ -197,9 +197,7 @@ def search_scholar(
         if not os.path.isfile(response_filepath):
             download_page(http_request_parameters, response_filepath)
 
-        search_result_page = process_page(
-            http_request_parameters, search_request, response_filepath
-        )
+        search_result_page = process_page(http_request_parameters, response_filepath)
         search_result_pages.append(search_result_page)
 
     return search_result_pages

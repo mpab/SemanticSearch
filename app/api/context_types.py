@@ -198,6 +198,7 @@ class SearchContext(object):
     def __init__(self, search_request: SearchRequest):
         self.search_request = search_request
         self.search_result_pages: List[SearchResultPage] = []
+        self.count_of_search_results = -1
 
         self.exec_state_name = ""
         self.exec_state_value = -1
