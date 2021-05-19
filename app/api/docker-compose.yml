@@ -2,9 +2,10 @@ version: "3.4"
 
 services:
   semantic-search-api:
-    image: semantic-search-api
-    container_name: semantic-search-api
+    image: semantic_search_api
+    container_name: semantic_search_api
     ports:
       - "5000:5000"
     volumes:
-      - ./:/usr/local/src/webapp
+      - ./:/app/api
+      - ../data:/app/data

@@ -1,0 +1,10 @@
+version: "3.4"
+
+services:
+  semantic_search_ui:
+    image: semantic_search_ui
+    container_name: semantic_search_ui
+    ports:
+      - "9000:80"
+    volumes:
+      - ./build:/app/ui
