@@ -4,7 +4,9 @@ services:
   semantic_search_ui:
     image: semantic_search_ui
     container_name: semantic_search_ui
+    tty: true
+    stdin_open: true
     ports:
-      - "9000:80"
+      - "3000:3000"
     volumes:
-      - ./build:/app/ui
+      - ./:/app/ui

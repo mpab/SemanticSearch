@@ -1,4 +1,0 @@
-#!/bin/bash
-
-docker build -t semantic_search_ui .
-docker compose up
