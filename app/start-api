@@ -1,4 +1,5 @@
 #!/bin/bash
 
 cd ./api
-./api
+#./api
+./docker-build-run
